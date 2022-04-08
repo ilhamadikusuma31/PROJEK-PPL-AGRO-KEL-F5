@@ -53,7 +53,7 @@ a:hover {
 	justify-content: center;
 	align-items: center;
 	padding: 15px;
-	background: rgb(255, 253, 208);
+	background: #efde25d4;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -moz-box;
@@ -98,7 +98,7 @@ a:hover {
 	height: 100%;
 	top: 0;
 	left: 0;
-	background-color: rgb(17 25 29 / 70%);
+	background-color: rgba(0, 0, 0, 0.774);
 }
 
 .form-title {
@@ -108,6 +108,7 @@ a:hover {
 	line-height: 1.2;
 	text-align: center;
 	word-break: break-word;
+
 }
 
 .form-content {
@@ -133,7 +134,7 @@ input {
 .input-wrapper {
 	width: 100%;
 	position: relative;
-	border-bottom: 1px solid #b2b2b2;
+	border-bottom: 1px solid #888409;
 	margin-bottom: 26px;
 }
 
@@ -200,7 +201,7 @@ button:hover {
 
 .button-style {
 	height: 50px;
-	background-color: #464470;
+	background-color: #2f2e2c;
 	border-radius: 5px;
 	justify-content: center;
 	align-items: center;
@@ -222,7 +223,7 @@ button:hover {
 }
 
 .button-style:hover {
-	background-color: #333333;
+	background-color: #423f33;
 }
 
 /* ============> Checkbox */

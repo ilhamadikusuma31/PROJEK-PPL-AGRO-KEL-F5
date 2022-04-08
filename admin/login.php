@@ -12,7 +12,7 @@ if (isset($_COOKIE['kaze']) and isset(($_COOKIE['kami']))){
     //ambil uname berdasarkan kaze == id
     $hasil = mysqli_query($conn, "SELECT username FROM admin WHERE admin_id = '$kaze'");
     $row = mysqli_fetch_assoc($hasil);
-    var_dump($row[0]);
+
 
     //apakah cocok cookie uname dengan uname yang ada di db  
     if($kami=== hash("sha256",$row["username"])){
@@ -55,7 +55,7 @@ if(isset($_POST['sbmt'])){
                 
             }
 
-
+            $_SESSION['nama_admin'] = $row['username'];
             header("location: index.php");
             exit;
         }
@@ -86,7 +86,7 @@ if(isset($_POST['sbmt'])){
 	<link rel="stylesheet" type="text/css" href="../font/font-awesome-4.7.0/css/font-awesome.min.css">
 	<!-- / Custom style -->
 	<link rel="stylesheet" type="text/css" href="../css/styleLoginSignUpAdmin.css">
-    <title>Halaman Login</title>
+    <title>Admin | Gemol Indonesia </title>
 </head>
 <body>
     <main>
@@ -94,7 +94,7 @@ if(isset($_POST['sbmt'])){
 		    <div class="form-wrapper">
 				<div class="form-header">
 					<span class="form-title">
-						Login to <strong>Gemol Indonesia</strong>
+						Login <strong>Gemol Indonesia</strong>
 					</span>
 				</div>
 
