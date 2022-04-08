@@ -101,6 +101,31 @@
     <!-- akhir card "Apa Itu Gemol" -->
 
 
+    <h1>halaman login</h1>
+    <?php if(isset($error)): ?>
+    <h6>Username atau Password salah</h6>
+    <?php endif ?>
+    <form action="" method="post">
+        <ul>
+            <li>
+                <label for="username">username:</label>
+                <input type="text" name="username" id="username">
+            </li>
+            <li>
+                <label for="password">password:</label>
+                <input type="text" name="password" id="password">
+            </li>
+            <li>
+                <input type="checkbox" name="ingatSaya" id="ingatSaya">
+                <label for="password">ingat saya</label>
+            </li>
+            <li>
+                <button type="submit" name="sbmt">Login</button>
+            </li>
+        </ul>
+    </form>
+
+
 </body>
 
 </html>

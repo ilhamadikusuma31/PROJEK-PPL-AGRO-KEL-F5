@@ -54,7 +54,7 @@ function upload(){
         return false;
     }
 
-    //cek jika ukurannya terlalu besar (lebih dari 1500000b == 1mb)
+    //cek jika ukurannya terlalu besar (lebih dari 1500000b == 1.5mb)
     if($ukuranFile > 1500000){
         echo "<script>
                 alert('gambar yang Anda upload lebih dari 1.5 mb')
@@ -223,7 +223,7 @@ function registration($data){
     $password2 = mysqli_real_escape_string($conn, $data["pass2"]);
 
     //cek uname sudah ada atau belum
-    $hasil = mysqli_query($conn, "SELECT username FROM admin WHERE username = '$username");
+    $hasil = mysqli_query($conn, "SELECT username FROM admin WHERE username = '$username'");
     if (mysqli_fetch_assoc($hasil)){
         echo "
         <script> 

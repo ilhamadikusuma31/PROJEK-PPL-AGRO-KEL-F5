@@ -78,31 +78,59 @@ if(isset($_POST['sbmt'])){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../img/login.ico" />
+
+	<!-- / Bootstrap Core -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- / FontAwesome -->
+	<link rel="stylesheet" type="text/css" href="../font/font-awesome-4.7.0/css/font-awesome.min.css">
+	<!-- / Custom style -->
+	<link rel="stylesheet" type="text/css" href="../css/styleLoginSignUpAdmin.css">
     <title>Halaman Login</title>
 </head>
 <body>
-    <h1>halaman login</h1>
-    <?php if(isset($error)): ?>
-        <h6>Username atau Password salah</h6>
-    <?php endif ?>
-    <form action="" method="post">
-        <ul>
-            <li>
-                <label for="username">username:</label>
-                <input type="text" name="username" id ="username">
-            </li>
-            <li>
-                <label for="password">password:</label>
-                <input type="text" name="password" id ="password">
-            </li>
-            <li>
-                <input type="checkbox" name="ingatSaya" id ="ingatSaya">
-                <label for="password">ingat saya</label>
-            </li>
-            <li>
-                <button type="submit" name="sbmt">Login</button>
-            </li>
-        </ul>
-    </form>
+    <main>
+	    <div class="form-main-container">
+		    <div class="form-wrapper">
+				<div class="form-header">
+					<span class="form-title">
+						Login to <strong>Gemol Indonesia</strong>
+					</span>
+				</div>
+
+				<form class="form-content" method="POST">
+					<div class="input-wrapper">
+						<input class="input-style" type="text" name="username" placeholder="Username" id="username" autocomplete="off" required>
+						<span class="input-style-focus"></span>
+					</div>
+
+					<div class="input-wrapper">
+						<div class="input-group">
+							<input class="form-control" type="password" placeholder="Password" id="password" name="password" autocomplete="off" required>
+							<span class="form-control-focus"></span>
+							<div class="input-group-addon" onclick="passwordVisibility();">
+								<i class="fa fa-eye" id="showPass"></i>
+								<i class="fa fa-eye-slash d-none" id="hidePass"></i>
+							</div>
+						</div>
+					</div>
+
+					<button class="button-style w-100" name="sbmt">
+						Login
+					</button>
+
+					<div class="checkbox-wrapper mt-4">
+						<input type="checkbox" class="checkbox-style" id="checkbox" name="ingatSaya">
+						<label class="label-checkbox-style" for="checkbox">
+							Remember me
+						</label>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</main>
+
+    <script src="../js/password-visibility.js"></script>
 </body>
 </html>
