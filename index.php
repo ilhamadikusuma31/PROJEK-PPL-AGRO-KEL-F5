@@ -12,7 +12,7 @@
 
   <!-- Style CSS sendiri -->
   <link rel="stylesheet" href="css/style.css">
-  <title>Admin | Gemol Indonesia</title>
+  <title> | Gemol Indonesia</title>
 </head>
 
 <body>
@@ -35,11 +35,8 @@
           <li class="nav-item ">
             <a class="btn btn-navbar me-1 h6" href="#">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="btn btn-navbar me-1 h6" href="#">Profil</a>
-          </li>
-          <li class="nav-item">
-            <a class="btn btn-navbar me-1 h6" href="#">Penjualan</a>
+          <li class="nav-item ">
+            <a class="btn btn-navbar me-1 h6 btn-warning" href="#">Profile</a>
           </li>
           <li class="nav-item">
             <a class="btn btn-navbar me-1 h6" href="#">Ulasan</a>

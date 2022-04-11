@@ -1,6 +1,7 @@
 <?php 
 
 $conn = mysqli_connect("localhost","root","","ujicoba");
+// $conn = mysqli_connect("sql108.epizy.com","epiz_31493034","o1D4khGn0JoiCjn","epiz_31493034_ujicoba");
 
 
 function getData($query){
@@ -67,7 +68,7 @@ function upload(){
     $namaFileBaru = uniqid();
     $namaFileBaru .= ".";
     $namaFileBaru .= $ekstensiGambar;
-    move_uploaded_file($tmp_name_File,'img/'.$namaFileBaru);
+    move_uploaded_file($tmp_name_File,"../img/".$namaFileBaru);
 
 
     return $namaFileBaru;
@@ -90,6 +91,7 @@ function addDataBarang($data){
     $jenis_brg = htmlspecialchars($data["jenis_brg"]);
     $berat_brg = htmlspecialchars($data["berat_brg"]);
     $harga_brg = htmlspecialchars($data["harga_brg"]);
+    $status_brg = htmlspecialchars($data["status_brg"]);
     // $foto_brg = htmlspecialchars($data["foto_brg"]); //foto_brg diganti versi upload di line berikutnya
     
     //upload gambar
@@ -101,27 +103,19 @@ function addDataBarang($data){
     //untuk jenis barang harus di convert dari string ke id supaya cocok di db
     $idBarang = getData("SELECT jenis_barang_id FROM jenis_barang WHERE nama_jenis_barang = '$jenis_brg'");
     $jenis_brg = $idBarang[0]["jenis_barang_id"]; //array multidimensi ambil indeks ke-0 meskipun cuma 1 data
+
+    //untuk status barang harus di convert dari string ke id supaya cocok di db
+    $idBarang = getData("SELECT status_barang_id FROM status_barang WHERE nama_status = '$status_brg'");
+    $status_brg = $idBarang[0]["status_barang_id"]; //array multidimensi ambil indeks ke-0 meskipun cuma 1 data
     
     
     //menyiapkan query, value pertama kosong karena id auto increment
-    $query = "INSERT INTO barang VALUES('','$nama_brg','$harga_brg','$jenis_brg','$foto_brg','$berat_brg')";
+    $query = "INSERT INTO barang VALUES('','$nama_brg','$harga_brg','$jenis_brg','$foto_brg','$berat_brg','$status_brg')";
     mysqli_query($conn, $query); 
+
+
+    return mysqli_affected_rows($conn);
     
-    //cek berhasil ditambahkan atau tidak
-    if(mysqli_affected_rows($conn) > 0){
-        echo "
-        <script> 
-        alert('data berhasil ditambahkan');
-        document.location.href = 'index.php';
-        </script>";
-    }
-    
-    else{
-        echo "
-        <script> 
-        alert('data gagal ditambahkan');
-        </script>";
-    }
     
     
 }
@@ -130,26 +124,14 @@ function deleteDataBarang($id, $namaFileGambar){
     global $conn;
 
     //menghapus file gambar dari dir
-    unlink('img/'.$namaFileGambar);
+    unlink('../img/'.$namaFileGambar);
 
     //menghapus data barang dari db berdasarkan id
     mysqli_query($conn, "DELETE FROM barang WHERE barang_id = $id");
 
-    //cek berhasil dihapus atau tidak
-    if(mysqli_affected_rows($conn) > 0 ){
-        echo "
-        <script> 
-        alert('data berhasil dihapus');
-        document.location.href = 'index.php';
-        </script>";
-    }
 
-    else{
-        echo "
-        <script> 
-        alert('data gagal dihapus');
-        </script>";
-    }
+    return mysqli_affected_rows($conn);
+
 
 
 }
@@ -192,21 +174,7 @@ function updateDataBarang($data){
 
     mysqli_query($conn, $query); 
 
-    //cek berhasil ditambahkan atau tidak
-    if(mysqli_affected_rows($conn) > 0){
-        echo "
-        <script> 
-        alert('data berhasil diubah');
-        document.location.href = 'index.php';
-        </script>";
-    }
-
-    else{
-        echo "
-        <script> 
-        alert('data gagal diubah');
-        </script>";
-    }
+    return mysqli_affected_rows($conn);
 
 
 }
