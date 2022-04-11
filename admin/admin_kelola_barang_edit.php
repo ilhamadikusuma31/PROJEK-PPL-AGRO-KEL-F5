@@ -14,13 +14,21 @@ $uname = $_SESSION['nama_admin']; //diset di login.php
 // mendapat id dari index.php tombol modif
 $id = $_GET["id"];
 
-// ambil data dari database, agar bisa di generate di form att valuenya
-$barangs = getData("SELECT * FROM barang WHERE barang_id =$id")[0];
 
+// variabel raws menyimpan semua data dari tabel barang, jenis_barang, status_barang(rekomen atau normal)
+// kalo mau make datanya tinggal panggil kolomnya dari salah satu tabel tsb.
+$raws = getData("SELECT *
+                FROM jenis_barang
+                JOIN barang on jenis_barang.jenis_barang_id = barang.jenis_barang_id
+                JOIN status_barang on status_barang.status_barang_id = barang.status_barang_id 
+                WHERE barang_id = $id; 
+                ")[0];
 
-$jenis_barang = $barangs["jenis_barang_id"];
-$jenis_barang = getData("SELECT * FROM jenis_barang WHERE jenis_barang_id = '$jenis_barang' ")[0];
+//jenis barang
+$jenis_brg = getData("SELECT * FROM jenis_barang");
 
+//status
+$status_brg = getData("SELECT * FROM status_barang");
 
 
 // jika tombol submit sudah ditekan
@@ -157,7 +165,7 @@ if  (isset($_POST["sbmt"])){
                         <!-- rekomendasi bisa lewat edit bos -->
                         <!-- <a class="collapse-item" href="#">barang rekomendasi</a>   -->
                         <a class="collapse-item" href="#">jenis barang</a>
-                        <a class="collapse-item" href="#">transaksi</a>
+                        <a class="collapse-item" href="admin_kelola_transaksi.php">transaksi</a>
                         <a class="collapse-item" href="#">ulasan</a>
                         <a class="collapse-item" href="#">testimoni</a>
                     </div>
@@ -412,22 +420,22 @@ if  (isset($_POST["sbmt"])){
                                         <!-- multipart/form-data : agar file foto bisa diup ke dir -->
                                         <form action="" method="POST" enctype="multipart/form-data">
                                             <!-- input hidden buat ngoper id ke func updateDataBarang di function.php -->
-                                            <input type="hidden" name="id_brg" value="<?= $barangs["barang_id"];?>">
+                                            <input type="hidden" name="id_brg" value="<?= $raws["barang_id"];?>">
                                             <!-- akhir  input hidden buat ngoper id ke func updateDataBarang di function.php -->
                                             <!-- input hidden buat ngoper nama foto lama ke func updateDataBarang di function.php -->
-                                            <input type="hidden" name="foto_brg_lama" value="<?= $barangs["foto_barang"];?>">
+                                            <input type="hidden" name="foto_brg_lama" value="<?= $raws["foto_barang"];?>">
                                             <!-- akhir input hidden buat ngoper nama foto lama ke func updateDataBarang di function.php -->
 
                                             <div class="row mb-1">
                                                 <div class="col-md-2">Foto</div>
                                                 <div class="col">
-                                                    <img src="../img/<?= $barangs['foto_barang'];?>" width="200px" alt="">
+                                                    <img src="../img/<?= $raws['foto_barang'];?>" width="200px" alt="">
                                                 </div>
                                             </div>
                                             <div class="row mb-1">
                                             <div class="col-md-2">Upload Foto</div>
                                                 <div class="col-md-5"><div class="form-group">
-                                                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto_brg" value="<?= $barangs['foto_barang'];?>">
+                                                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto_brg" value="<?= $raws['foto_barang'];?>">
                                                 </div></div>
 
                                             </div>
@@ -435,7 +443,7 @@ if  (isset($_POST["sbmt"])){
                                                 <div class="col-md-2">Nama Barang</div>
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" id="formGroupExampleInput" name="nama_brg" value="<?= $barangs['nama_barang']?>" Required>
+                                                        <input type="text" class="form-control" id="formGroupExampleInput" name="nama_brg" value="<?= $raws['nama_barang']?>" Required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -446,10 +454,9 @@ if  (isset($_POST["sbmt"])){
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                     <select class="form-control" id="exampleFormControlSelect1" name="jenis_brg" Required>
-                                                        <?php $j_brg = getData("SELECT * FROM jenis_barang")?>
-                                                        <?php for($i = 0; $i< count($j_brg); $i++): ?>
-                                                        <option value="<?= $jenis_barang["nama_jenis_barang"]?>" checked=""><?=($j_brg[$i]['nama_jenis_barang']) ?></option>
-                                                        <?php endfor ?>
+                                                        <?php foreach($jenis_brg as $j): ?>
+                                                        <option><?=$j["nama_jenis_barang"];?></option>
+                                                        <?php endforeach ?>
                                                     </select>
                                                     </div>
                                                 </div>
@@ -461,7 +468,7 @@ if  (isset($_POST["sbmt"])){
                                                 </div>
                                                 <div class="col-md-5">
                                                     <div class="input-group mb-2">
-                                                        <input type="number" min=0 class="form-control" id="inlineFormInputGroup" name="berat_brg" value="<?= $barangs['berat_barang']?>" Required>
+                                                        <input type="number" min=0 class="form-control" id="inlineFormInputGroup" name="berat_brg" value="<?= $raws['berat_barang']?>" Required>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">gram</div>
                                                         </div>
@@ -477,7 +484,7 @@ if  (isset($_POST["sbmt"])){
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">Rp.</div>
                                                         </div>
-                                                        <input type="number" class="form-control" id="inlineFormInputGroup" name="harga_brg" value="<?= $barangs['harga_barang']?>" Required>
+                                                        <input type="number" class="form-control" id="inlineFormInputGroup" name="harga_brg" value="<?= $raws['harga_barang']?>" Required>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">,00</div>
                                                         </div>
@@ -491,16 +498,15 @@ if  (isset($_POST["sbmt"])){
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                     <select class="form-control" id="exampleFormControlSelect1" name="status_brg" Required>
-                                                        <?php $j_brg_status = getData("SELECT * FROM status_barang")?>
-                                                        <?php for($i = 0; $i< count($j_brg_status); $i++): ?>
-                                                        <option><?=($j_brg_status[$i]['nama_status']) ?></option>
-                                                        <?php endfor ?>
+                                                        <?php foreach($status_brg as $s): ?>
+                                                        <option><?=$s["nama_status"];?></option>
+                                                        <?php endforeach ?>
                                                     </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row justify-content-beetween">
-                                            <div class="col mb-1"><button class="btn btn-danger" type="reset" onclick="location.href='index.php'">Kembali</button></div>
+                                            <div class="col mb-1"><button class="btn btn-danger" type="reset" onclick="location.href='admin_kelola_barang.php'">Kembali</button></div>
                                                 <div class="col mb-1"><button class="btn btn-primary" type="submit" name="sbmt" onclick="return confirm('Apakah Anda yakin ingin mengubah barang ini?')">Submit</button></div>
                                             </div>
                                         </form>

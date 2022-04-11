@@ -12,9 +12,17 @@ if(!isset($_SESSION["admin_login"])){
 //nama uname admin yang sekarang sedang mengakses
 $uname = $_SESSION['nama_admin']; //diset di login.php
 
-
-$barang = getData("SELECT * FROM barang");
+// untuk mengisi kolom nomor
 $angka = 1;
+
+
+// variabel raws menyimpan semua data dari tabel barang, jenis_barang, status_barang(rekomen atau normal)
+// kalo mau make datanya tinggal panggil kolomnya dari salah satu tabel tsb.
+$raws = getData("SELECT *
+                FROM jenis_barang
+                JOIN barang on jenis_barang.jenis_barang_id = barang.jenis_barang_id
+                JOIN status_barang on status_barang.status_barang_id = barang.status_barang_id  
+                ");
 
 
 ?>
@@ -130,7 +138,7 @@ $angka = 1;
                         <!-- rekomendasi bisa lewat edit bos -->
                         <!-- <a class="collapse-item" href="#">barang rekomendasi</a>   -->
                         <a class="collapse-item" href="#">jenis barang</a>
-                        <a class="collapse-item" href="#">transaksi</a>
+                        <a class="collapse-item" href="admin_kelola_transaksi.php">transaksi</a>
                         <a class="collapse-item" href="#">ulasan</a>
                         <a class="collapse-item" href="#">testimoni</a>
                     </div>
@@ -385,8 +393,8 @@ $angka = 1;
                                                     <thead>
                                                     <tr>
                                                         <th>No</th>
+                                                        <th>Gambar:</th>
                                                         <th>Nama:</th>
-                                                        <th>Gambar</th>
                                                         <th>Jenis:</th>
                                                         <th>Berat(gr):</th>
                                                         <th>Harga:</th>
@@ -395,26 +403,19 @@ $angka = 1;
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <?php foreach($barang as $b): ?>
+                                                    <?php foreach($raws as $r): ?>
                                                     <tr>
-                                                        <!-- logic -->
-                                                        <!-- nb: khusus jenis barang harus dicari berdasarkan id baru dapet nama_jenis_barang -->
-                                                        <!-- nb: khusus status_barang harus dicari berdasarkan id baru dapet nama_statusnya -->
-                                                        <?php $jenis_barang = $b['jenis_barang_id']; $jenis_barang = getData("SELECT nama_jenis_barang FROM jenis_barang WHERE jenis_barang_id = $jenis_barang ")[0]['nama_jenis_barang']?>
-                                                        <?php $status_barang = $b['status_barang_id']; $status_barang = getData("SELECT nama_status FROM status_barang WHERE status_barang_id = $status_barang ")[0]['nama_status']?>
-                                                        <!-- main -->
                                                         <td><?= $angka++ ?></td>
-                                                        <td><?= $b['nama_barang']  ?></td>
-                                                        <td><img src="../img/<?= $b['foto_barang']  ?>" width="150px" /></td>
-                                                        <td><?= $jenis_barang  ?></td>
-                                                        <td><?= $b['berat_barang']  ?></td>
-                                                        <td><?= $b['harga_barang']  ?></td>
-                                                        <td><?= $status_barang  ?></td>
+                                                        <td><img src="../img/<?= $r['foto_barang']  ?>" width="150px" /></td>
+                                                        <td><?= $r['nama_barang']  ?></td>
+                                                        <td><?= $r['nama_jenis_barang']  ?></td>
+                                                        <td><?= $r['berat_barang']  ?></td>
+                                                        <td><?= $r['harga_barang']  ?></td>
+                                                        <td><?= $r['nama_status']  ?></td>
                                                         <td>
-                                                            <a href="admin_kelola_barang_edit.php?id=<?= $b['barang_id']  ?>"><button type="button" class="btn btn-sm btn-warning mt-1">edit⠀</button></a>
-                                                            <a href="admin_kelola_barang_hapus.php?id=<?= $b['barang_id']  ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus barang ini?')"><button type="button" class="btn btn-danger btn-sm mt-1">hapus</button></a>
+                                                            <a href="admin_kelola_barang_edit.php?id=<?= $r['barang_id']  ?>"><button type="button" class="btn btn-sm btn-warning mt-1">edit⠀</button></a>
+                                                            <a href="admin_kelola_barang_hapus.php?id=<?= $r['barang_id']  ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus barang ini?')"><button type="button" class="btn btn-danger btn-sm mt-1">hapus</button></a>
                                                         </td>
-                                                        <!-- akhir main -->
                                                     </tr>
                                                     <?php endforeach ?>
                                                     </tbody>
@@ -505,10 +506,16 @@ $angka = 1;
 <script>
   $(document).ready(function () {
     $("#table").DataTable();
-  });
+    });
 
-  $("#table").DataTable( {
-    responsive: true
+$('#table').DataTable( {
+    responsive: {
+        details: {
+            display: $.fn.dataTable.Responsive.display.childRowImmediate
+        }
+    }
 } );
+
+
 </script>
 

@@ -55,8 +55,8 @@ function upload(){
         return false;
     }
 
-    //cek jika ukurannya terlalu besar (lebih dari 1500000b == 1.5mb)
-    if($ukuranFile > 1500000){
+    //cek jika ukurannya terlalu besar (lebih dari 1510000b == 1.51mb)
+    if($ukuranFile > 1510000){
         echo "<script>
                 alert('gambar yang Anda upload lebih dari 1.5 mb')
             </script>";

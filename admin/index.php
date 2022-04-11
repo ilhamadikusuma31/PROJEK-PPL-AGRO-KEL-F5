@@ -126,7 +126,7 @@ $uname = $_SESSION['nama_admin']; //diset di login.php
                         <!-- rekomendasi bisa lewat edit bos -->
                         <!-- <a class="collapse-item" href="#">barang rekomendasi</a>   -->
                         <a class="collapse-item" href="#">jenis barang</a>
-                        <a class="collapse-item" href="#">transaksi</a>
+                        <a class="collapse-item" href="admin_kelola_transaksi.php">transaksi</a>
                         <a class="collapse-item" href="#">ulasan</a>
                         <a class="collapse-item" href="#">testimoni</a>
                     </div>
