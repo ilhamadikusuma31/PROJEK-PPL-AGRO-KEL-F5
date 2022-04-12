@@ -1,7 +1,28 @@
 <?php 
 
 session_start();
-require "../function.php";
+require "../../function.php";
+
+
+
+$path_web_gemol    = "../index.php";
+$path_login        = "../login.php";
+$path_logout       = "../logout.php";
+$path_registrasi   = "../registrasi.php";
+$path_main         = "../index.php";
+$path_img          = "../../img";
+$path_vendor       = "../../vendor";
+$path_css          = "../../css";
+$path_js           = "../../js";
+
+
+$path_brg          = "barang.php";
+$path_edit_brg     = "barang_edit.php";
+$path_hapus_brg    = "barang_hapus.php";
+$path_tambah_brg   = "barang_tambah.php";
+
+
+$path_penjualan    ="../penjualan/penjualan.php";
 
 //kalo sesi admin tidak ada, di redirect ke halaman login
 if(!isset($_SESSION["admin_login"])){
@@ -53,17 +74,17 @@ foreach($raws as $r){
     <title>Admin | Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?=$path_vendor;?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/style-admin.css" rel="stylesheet">
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?=$path_css;?>/style-admin.css" rel="stylesheet">
+    <link href="<?=$path_css;?>/sb-admin-2.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <link rel="shortcut icon" href="../img/Logo Mitra_lingkaran.png">
+    <link rel="shortcut icon" href="<?=$path_img;?>/Logo Mitra_lingkaran.png">
 
 
 
@@ -80,10 +101,10 @@ foreach($raws as $r){
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= $path_main; ?>">
                 <div class="sidebar-brand-icon">
                     <!-- <i class="fas fa-laugh-wink"></i> -->
-                    <img src="../img/Logo Mitra_lingkaran.png" alt="" width="50%">
+                    <img src ="<?= $path_img; ?>/Logo Mitra_lingkaran.png" alt="" width="50%">
                 </div>
                 <div class="sidebar-brand-text mx-3">Admin</div>
             </a>
@@ -93,7 +114,7 @@ foreach($raws as $r){
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="<?= $path_main; ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -115,26 +136,19 @@ foreach($raws as $r){
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="../index.php">Website Gemol</a>
-                        <!-- <a class="collapse-item" href="gemolインドネシアで食べたい.php">Register</a>
-                        <a class="collapse-item" href="forgot-password.php">Forgot Password</a> -->
+                        <h6 class="collapse-header">Admin Screens:</h6>
+                        <a class="collapse-item" href="<?= $path_registrasi; ?>">Register</a>
+                        <a class="collapse-item" href="<?= $path_login; ?>">Login</a>
+                        <a class="collapse-item" href="#">Forgot Password</a>
                         <div class="collapse-divider"></div>
-                        <!-- <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.php">404 Page</a>
+                        <h6 class="collapse-header">Other Pages:</h6>
+                        <a class="collapse-item" href="<?= $path_web_gemol; ?>">Website Gemol</a>
+                        <!-- <a class="collapse-item" href="404.php">404 Page</a>
                         <a class="collapse-item" href="blank.php">Blank Page</a> -->
                     </div>
                 </div>
             </li>
-            
-            <!-- Nav Item - Charts
-            <li class="nav-item">
-                <a class="nav-link" href="charts.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li> -->
-
-
+  
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2"
@@ -145,11 +159,9 @@ foreach($raws as $r){
                 <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Items:</h6>
-                        <a class="collapse-item" href="admin_kelola_barang.php">barang</a>
-                        <!-- rekomendasi bisa lewat edit bos -->
-                        <!-- <a class="collapse-item" href="#">barang rekomendasi</a>   -->
+                        <a class="collapse-item" href="<?= $path_brg; ?>">barang</a>
                         <a class="collapse-item" href="#">jenis barang</a>
-                        <a class="collapse-item" href="#">penjualan</a>
+                        <a class="collapse-item" href="<?= $path_penjualan; ?>">penjualan</a>
                         <a class="collapse-item" href="#">ulasan</a>
                         <a class="collapse-item" href="#">testimoni</a>
                     </div>
@@ -288,8 +300,8 @@ foreach($raws as $r){
                                     Message Center
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                    <div class="dropdown-list-image mr-3"> 
+                                        <img class="rounded-circle" src="<?= $path_img; ?>/admin/undraw_profile_1.svg"
                                             alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
@@ -301,7 +313,7 @@ foreach($raws as $r){
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                        <img class="rounded-circle" src="<?= $path_img; ?>/undraw_profile_2.svg"
                                             alt="...">
                                         <div class="status-indicator"></div>
                                     </div>
@@ -313,7 +325,7 @@ foreach($raws as $r){
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                        <img class="rounded-circle" src="<?= $path_img; ?>/undraw_profile_3.svg"
                                             alt="...">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
@@ -347,7 +359,7 @@ foreach($raws as $r){
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $uname; ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="../img/admin/undraw_profile.svg">
+                                    src = "<?= $path_img;?>/admin/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -365,7 +377,7 @@ foreach($raws as $r){
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#popUpConfirmLogout">
+                                <a class="dropdown-item" href="<?= $path_logout; ?>" data-toggle="modal" data-target="#popUpConfirmLogout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -380,89 +392,89 @@ foreach($raws as $r){
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Kelola penjualan</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                    </div>
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Kelola penjualan</h1>
+                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                </div>
 
 
-                    <!-- Content Row -->
-                    <div class="row">
-                        <div class="col mb-4">
-                            <!-- Illustrations -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <a href="admin_kelola_penjualan_tambah.php"> <button type="button" class="btn btn-info">Tambah</button></a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="table-responsive">
-                                                <table id="table" class="table table-striped table-bordered display responsive" cellspacing="0" width="100%">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Nama Pembeli</th>
-                                                        <th>Tanggal</th>
-                                                        <th>Alamat</th>
-                                                        <th>Barang</th>
-                                                        <th>Harga/pcs</th>
-                                                        <th>Jumlah</th>
-                                                        <th>Harga Total</th>
-                                                        <th>Aksi</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <?php foreach($raws as $r): ?>
-                                                    <tr>
-                                                        <!-- main -->
-                                                        <td><?= $angka++ ?></td>
-                                                        <td><?= $r["nama_pembeli"]?></td>
-                                                        <td><?= $r["tanggal"]?></td>
-                                                        <td><?= $r["alamat_pembeli"]?></td>
-                                                        <td><?= $r["nama_barang"]?></td>
-                                                        <td><?= $r["harga_barang"]?></td>
-                                                        <td><?= $r["jumlah_barang"]?></td>
-                                                        <td><?= $r["jumlah_barang"] * $r["harga_barang"];?></td>
-                                                        <td>
-                                                            <a href="admin_kelola_penjualan_edit.php?id=<?= $r['detail_penjualan_id']  ?>"><button type="button" class="btn btn-sm btn-warning mt-1">edit⠀</button></a>
-                                                            <a href="admin_kelola_penjualan_hapus.php?id=<?= $r['detail_penjualan_id']  ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus barang ini?')"><button type="button" class="btn btn-danger btn-sm mt-1">hapus</button></a>
-                                                        </td>
-                                                        <!-- akhir main -->
-                                                    </tr>
-                                                    <?php endforeach ?>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>Jumlah</td>
-                                                        <td>Harga Total</td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td><?= $total_seluruh; ?></td>
-                                                        <td><?= $harga_seluruh; ?></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                <!-- Content Row -->
+                <div class="row">
+                    <div class="col mb-4">
+                        <!-- Illustrations -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <a href="admin_kelola_penjualan_tambah.php"> <button type="button" class="btn btn-info">Tambah</button></a>
+                            </div>
+                            <div class="card-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="table-responsive">
+                                            <table id="table" class="table table-striped table-bordered display responsive" cellspacing="0" width="100%">
+                                                <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nama Pembeli</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Alamat</th>
+                                                    <th>Barang</th>
+                                                    <th>Harga/pcs</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Harga Total</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php foreach($raws as $r): ?>
+                                                <tr>
+                                                    <!-- main -->
+                                                    <td><?= $angka++ ?></td>
+                                                    <td><?= $r["nama_pembeli"]?></td>
+                                                    <td><?= $r["tanggal"]?></td>
+                                                    <td><?= $r["alamat_pembeli"]?></td>
+                                                    <td><?= $r["nama_barang"]?></td>
+                                                    <td><?= $r["harga_barang"]?></td>
+                                                    <td><?= $r["jumlah_barang"]?></td>
+                                                    <td><?= $r["jumlah_barang"] * $r["harga_barang"];?></td>
+                                                    <td>
+                                                        <a href="admin_kelola_penjualan_edit.php?id=<?= $r['detail_penjualan_id']  ?>"><button type="button" class="btn btn-sm btn-warning mt-1">edit⠀</button></a>
+                                                        <a href="admin_kelola_penjualan_hapus.php?id=<?= $r['detail_penjualan_id']  ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus barang ini?')"><button type="button" class="btn btn-danger btn-sm mt-1">hapus</button></a>
+                                                    </td>
+                                                    <!-- akhir main -->
+                                                </tr>
+                                                <?php endforeach ?>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>Jumlah</td>
+                                                    <td>Harga Total</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><?= $total_seluruh; ?></td>
+                                                    <td><?= $harga_seluruh; ?></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -503,33 +515,33 @@ foreach($raws as $r){
                 <div class="modal-body">Pilih "Logout" jika kamu yakin.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                    <a class="btn btn-primary" href="<?= $path_logout; ?>">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src ="<?= $path_vendor; ?>/jquery/jquery.min.js"></script>
+    <script src="<?= $path_vendor; ?>/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= $path_vendor; ?>/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="../js/sb-admin-2.min.js"></script>
+    <script src="<?= $path_js; ?>/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="../vendor/chart.js/Chart.min.js"></script>
+    <script src="<?= $path_vendor; ?>/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
+    <script src="<?= $path_js; ?>/demo/chart-area-demo.js"></script>
+    <script src="<?= $path_js; ?>/demo/chart-pie-demo.js"></script>
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="js/script.js"></script>
+    <script src="<?= $path_js; ?>/script.js"></script>
     <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="//cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.js"></script>
     <script src="//cdn.datatables.net/responsive/2.2.9/css/dataTables.responsive.css"></script>
@@ -537,6 +549,7 @@ foreach($raws as $r){
 </body>
 
 </html>
+
 
 
 <script>
@@ -554,5 +567,4 @@ foreach($raws as $r){
 
 
 </script>
-
 
