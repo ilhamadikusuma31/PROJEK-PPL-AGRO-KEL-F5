@@ -24,7 +24,7 @@ if(isset($_POST['regis'])){
 	<!-- / Custom style -->
 	<link rel="stylesheet" type="text/css" href="../css/styleLoginSignUpAdmin.css">
 	<link rel="shortcut icon" href="../img/Logo Mitra_lingkaran.png">
-	<title>Halaman Login</title>
+	<title>Halaman Registrasi</title>
 </head>
 
 <body>
@@ -46,26 +46,27 @@ if(isset($_POST['regis'])){
 
 					<div class="input-wrapper">
 						<div class="input-group">
-							<input class="form-control" type="password" placeholder="Password" id="password" name="pass"
+							<input class="form-control" type="password" placeholder="Password" id="password1" name="pass"
 								autocomplete="off" required>
 							<span class="form-control-focus"></span>
-							<div class="input-group-addon" onclick="passwordVisibility();">
-								<i class="fa fa-eye" id="showPass"></i>
-								<i class="fa fa-eye-slash d-none" id="hidePass"></i>
+							<div class="input-group-addon" onclick="passwordVisibility(1);">
+								<i class="fa fa-eye" id="showPass1"></i>
+								<i class="fa fa-eye-slash d-none" id="hidePass1"></i>
 							</div>
 						</div>
 					</div>
 					<div class="input-wrapper">
 						<div class="input-group">
-							<input class="form-control" type="password" placeholder="Konfirmasi Password" id="password"
+							<input class="form-control" type="password" placeholder="Konfirmasi Password" id="password2"
 								name="pass2" autocomplete="off" required>
 							<span class="form-control-focus"></span>
-							<div class="input-group-addon" onclick="passwordVisibility();">
-								<i class="fa fa-eye" id="showPass"></i>
-								<i class="fa fa-eye-slash d-none" id="hidePass"></i>
+							<div class="input-group-addon" onclick="passwordVisibility(2);">
+								<i class="fa fa-eye" id="showPass2"></i>
+								<i class="fa fa-eye-slash d-none" id="hidePass2"></i>
 							</div>
 						</div>
 					</div>
+
 
 					<button class="button-style w-100" name="regis">
 						daftar

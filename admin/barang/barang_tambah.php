@@ -1,7 +1,29 @@
 <?php 
 
 session_start();
-require "../function.php";
+require "../../function.php";
+
+
+
+
+$path_web_gemol    = "../index.php";
+$path_login        = "../login.php";
+$path_logout       = "../logout.php";
+$path_registrasi   = "../registrasi.php";
+$path_main         = "../index.php";
+$path_img          = "../../img";
+$path_vendor       = "../../vendor";
+$path_css          = "../../css";
+$path_js           = "../../js";
+
+
+$path_brg          = "barang.php";
+$path_edit_brg     = "barang_edit.php";
+$path_hapus_brg    = "barang_hapus.php";
+$path_tambah_brg   = "barang_tambah.php";
+
+
+$path_penjualan    ="../penjualan/penjualan.php";
 
 
 //kalo sesi admin tidak ada, di redirect ke halaman login
@@ -12,7 +34,6 @@ if(!isset($_SESSION["admin_login"])){
 
 //nama uname admin yang sekarang sedang mengakses
 $uname = $_SESSION['nama_admin']; //diset di login.php
-
 
 
 //jenis barang
@@ -31,7 +52,7 @@ if  (isset($_POST["sbmt"])){
         echo "
         <script> 
         alert('data berhasil ditambahkan');
-        document.location.href = 'admin_kelola_barang.php';
+        document.location.href = '$path_brg';
         </script>";
         }
 
@@ -43,7 +64,6 @@ if  (isset($_POST["sbmt"])){
     }
     
 }
-
 
 ?>
 
@@ -62,15 +82,18 @@ if  (isset($_POST["sbmt"])){
     <title>Admin | Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?=$path_vendor;?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/style-admin.css" rel="stylesheet">
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="shortcut icon" href="../img/Logo Mitra_lingkaran.png">
+    <link href="<?=$path_css;?>/style-admin.css" rel="stylesheet">
+    <link href="<?=$path_css;?>/sb-admin-2.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link rel="shortcut icon" href="<?=$path_img;?>/Logo Mitra_lingkaran.png">
+
 
 
 
@@ -86,10 +109,10 @@ if  (isset($_POST["sbmt"])){
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= $path_main; ?>">
                 <div class="sidebar-brand-icon">
                     <!-- <i class="fas fa-laugh-wink"></i> -->
-                    <img src="../img/Logo Mitra_lingkaran.png" alt="" width="50%">
+                    <img src ="<?= $path_img; ?>/Logo Mitra_lingkaran.png" alt="" width="50%">
                 </div>
                 <div class="sidebar-brand-text mx-3">Admin</div>
             </a>
@@ -99,7 +122,7 @@ if  (isset($_POST["sbmt"])){
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="<?= $path_main; ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -121,26 +144,19 @@ if  (isset($_POST["sbmt"])){
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="../index.php">Website Gemol</a>
-                        <!-- <a class="collapse-item" href="gemolインドネシアで食べたい.php">Register</a>
-                        <a class="collapse-item" href="forgot-password.php">Forgot Password</a> -->
+                        <h6 class="collapse-header">Admin Screens:</h6>
+                        <a class="collapse-item" href="<?= $path_registrasi; ?>">Register</a>
+                        <a class="collapse-item" href="<?= $path_login; ?>">Login</a>
+                        <a class="collapse-item" href="#">Forgot Password</a>
                         <div class="collapse-divider"></div>
-                        <!-- <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.php">404 Page</a>
+                        <h6 class="collapse-header">Other Pages:</h6>
+                        <a class="collapse-item" href="<?= $path_web_gemol; ?>">Website Gemol</a>
+                        <!-- <a class="collapse-item" href="404.php">404 Page</a>
                         <a class="collapse-item" href="blank.php">Blank Page</a> -->
                     </div>
                 </div>
             </li>
-            
-            <!-- Nav Item - Charts
-            <li class="nav-item">
-                <a class="nav-link" href="charts.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li> -->
-
-
+  
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2"
@@ -151,11 +167,9 @@ if  (isset($_POST["sbmt"])){
                 <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Items:</h6>
-                        <a class="collapse-item" href="admin_kelola_barang.php">barang</a>
-                        <!-- rekomendasi bisa lewat edit bos -->
-                        <!-- <a class="collapse-item" href="#">barang rekomendasi</a>   -->
+                        <a class="collapse-item" href="<?= $path_brg; ?>">barang</a>
                         <a class="collapse-item" href="#">jenis barang</a>
-                        <a class="collapse-item" href="admin_kelola_transaksi.php">transaksi</a>
+                        <a class="collapse-item" href="<?= $path_penjualan; ?>">penjualan</a>
                         <a class="collapse-item" href="#">ulasan</a>
                         <a class="collapse-item" href="#">testimoni</a>
                     </div>
@@ -294,8 +308,8 @@ if  (isset($_POST["sbmt"])){
                                     Message Center
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                    <div class="dropdown-list-image mr-3"> 
+                                        <img class="rounded-circle" src="<?= $path_img; ?>/admin/undraw_profile_1.svg"
                                             alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
@@ -307,7 +321,7 @@ if  (isset($_POST["sbmt"])){
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                        <img class="rounded-circle" src="<?= $path_img; ?>/undraw_profile_2.svg"
                                             alt="...">
                                         <div class="status-indicator"></div>
                                     </div>
@@ -319,7 +333,7 @@ if  (isset($_POST["sbmt"])){
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                        <img class="rounded-circle" src="<?= $path_img; ?>/undraw_profile_3.svg"
                                             alt="...">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
@@ -353,7 +367,7 @@ if  (isset($_POST["sbmt"])){
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $uname; ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="../img/admin/undraw_profile.svg">
+                                    src = "<?= $path_img;?>/admin/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -371,7 +385,7 @@ if  (isset($_POST["sbmt"])){
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#popUpConfirmLogout">
+                                <a class="dropdown-item" href="<?= $path_logout; ?>" data-toggle="modal" data-target="#popUpConfirmLogout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -397,111 +411,107 @@ if  (isset($_POST["sbmt"])){
                     <!-- Content Row -->
                     <div class="row">
                         <div class="col mb-4">
-
                             <!-- Illustrations -->
                             <div class="container-fluid">
-                                        <!-- Form untuk menambah -->
-                                        <!-- nb: kasih att name di tag input agar bisa dikirimkan datanya -->
-                                        <div class="card shadow mb-4">
-                                            <div class="card-header py-3">
-                                                <h6 class="m-0 font-weight-bold text-primary">Tambah Barang</h6>
+                                <!-- Form untuk menambah -->
+                                <!-- nb: kasih att name di tag input agar bisa dikirimkan datanya -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Tambah Barang</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- multipart/form-data : agar file foto bisa diup ke dir -->
+                                        <form action="" method="POST" enctype="multipart/form-data" id="uploadForm">
+                                            
+                                            <div class="row mb-1">
+                                                <div class="col-md-2 preview">
+                                                    <img src="" alt="" id="foto" width="200px">
+                                                </div>
                                             </div>
-                                            <div class="card-body">
-                                                <!-- multipart/form-data : agar file foto bisa diup ke dir -->
-                                                <form action="" method="POST" enctype="multipart/form-data" id="uploadForm">
-                                                    
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2 preview">
-                                                            <img src="" alt="" id="foto" width="200px">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">Foto</div>
-                                                        <div class="col-md-5"><div class="form-group">
-                                                            <input type="file" class="form-control-file" id="foto" name="foto_brg" accept="image/*" onchange="filePreview(event);" Required>
-                                                        </div></div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">Nama Barang</div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="nama_brg" Required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">
-                                                            Jenis Barang
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                            <select class="form-control" id="exampleFormControlSelect1" name="jenis_brg" Required>
-                                                                <?php foreach($jenis_brg as $j): ?>
-                                                                    <option><?=$j["nama_jenis_barang"];?></option>
-                                                                <?php endforeach ?>
-                                                            </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">
-                                                            Berat Barang
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <div class="input-group mb-2">
-                                                                <input type="number" min=0 class="form-control" id="inlineFormInputGroup" placeholder="" name="berat_brg" Required>
-                                                                <div class="input-group-append">
-                                                                    <div class="input-group-text">gram</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">
-                                                            Harga Barang
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Rp.</div>
-                                                                </div>
-                                                                <input type="number" class="form-control" id="inlineFormInputGroup" placeholder="" name="harga_brg" Required>
-                                                                <div class="input-group-append">
-                                                                    <div class="input-group-text">,00</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">
-                                                            Status
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                            <select class="form-control" id="exampleFormControlSelect1" name="status_brg" Required>
-                                                                <?php foreach($status_brg as $s): ?>
-                                                                    <option><?=$s["nama_status"];?></option>
-                                                                <?php endforeach ?>
-                                                            </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row justify-content-beetween">
-                                                        <div class="col mb-1"><button class="btn btn-danger" type="" onclick="location.href = 'admin_kelola_barang.php'">Kembali</button></div>
-                                                        <div class="col mb-1"><button class="btn btn-primary" type="submit" name="sbmt" onclick="return confirm('Apakah Anda yakin ingin menambah barang ini?')">Submit</button></div>
-                                                    </div>
-                                                </form>
+                                            <div class="row mb-1">
+                                                <div class="col-md-2">Foto</div>
+                                                <div class="col-md-5"><div class="form-group">
+                                                    <input type="file" class="form-control-file" id="foto" name="foto_brg" accept="image/*" onchange="filePreview(event);" Required>
+                                                </div></div>
                                             </div>
-                                        </div>
-                                    </div>  
-
+                                            <div class="row mb-1">
+                                                <div class="col-md-2">Nama Barang</div>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="formGroupExampleInput" name="nama_brg" autocomplete="off" Required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-1">
+                                                <div class="col-md-2">
+                                                    Jenis Barang
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                    <select class="form-control" id="exampleFormControlSelect1" name="jenis_brg" Required>
+                                                        <?php foreach($jenis_brg as $j): ?>
+                                                            <option><?=$j["nama_jenis_barang"];?></option>
+                                                        <?php endforeach ?>
+                                                    </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row mb-1">
+                                                <div class="col-md-2">
+                                                    Berat Barang
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="input-group mb-2">
+                                                        <input type="number" min=0 class="form-control" id="inlineFormInputGroup" placeholder="" name="berat_brg" autocomplete="off" Required>
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">gram</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-1">
+                                                <div class="col-md-2">
+                                                    Harga Barang
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Rp.</div>
+                                                        </div>
+                                                        <input type="number" class="form-control" id="inlineFormInputGroup" placeholder="" name="harga_brg" autocomplete="off" Required>
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">,00</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-1">
+                                                <div class="col-md-2">
+                                                    Status
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                    <select class="form-control" id="exampleFormControlSelect1" name="status_brg" Required>
+                                                        <?php foreach($status_brg as $s): ?>
+                                                            <option><?=$s["nama_status"];?></option>
+                                                        <?php endforeach ?>
+                                                    </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-beetween"> 
+                                                <div class="col mb-1"><button class="btn btn-danger" type="" onclick="location.href = '<?= $path_brg; ?>'">Kembali</button></div>
+                                                <div class="col mb-1"><button class="btn btn-primary" type="submit" name="sbmt" onclick="return confirm('Apakah Anda yakin ingin menambah barang ini?')">Submit</button></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
-
             </div>
             <!-- End of Main Content -->
 
@@ -540,39 +550,36 @@ if  (isset($_POST["sbmt"])){
                 <div class="modal-body">Pilih "Logout" jika kamu yakin.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                    <a class="btn btn-primary" href="<?= $path_logout; ?>">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
-    
-
     <!-- Bootstrap core JavaScript-->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src ="<?= $path_vendor; ?>/jquery/jquery.min.js"></script>
+    <script src="<?= $path_vendor; ?>/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= $path_vendor; ?>/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="../js/sb-admin-2.min.js"></script>
+    <script src="<?= $path_js; ?>/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="../vendor/chart.js/Chart.min.js"></script>
+    <script src="<?= $path_vendor; ?>/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
+    <script src="<?= $path_js; ?>/demo/chart-area-demo.js"></script>
+    <script src="<?= $path_js; ?>/demo/chart-pie-demo.js"></script>
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <script src="<?= $path_js; ?>/script.js"></script>
     <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="//cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.js"></script>
+    <script src="//cdn.datatables.net/responsive/2.2.9/css/dataTables.responsive.css"></script>
 
 </body>
 

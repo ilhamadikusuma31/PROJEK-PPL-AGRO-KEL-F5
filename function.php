@@ -3,6 +3,55 @@
 $conn = mysqli_connect("localhost","root","","ujicoba");
 // $conn = mysqli_connect("sql108.epizy.com","epiz_31493034","o1D4khGn0JoiCjn","epiz_31493034_ujicoba");
 
+function registration($data){
+    global $conn;
+    $username = $data["uname"];
+    $username = stripslashes($username);  //biar gada backslash
+    $username = strtolower($username);    
+    $password = mysqli_real_escape_string($conn, $data["pass"]); //memungkinkan pw berisi kutip
+    $password2 = mysqli_real_escape_string($conn, $data["pass2"]);
+
+    //cek uname sudah ada atau belum
+    $hasil = mysqli_query($conn, "SELECT username FROM admin WHERE username = '$username'");
+    if (mysqli_fetch_assoc($hasil)){
+        echo "
+        <script> 
+        alert('username sudah ada');
+        </script>";
+        return false;
+    }
+
+    //cek jika pw1 tidak sama dengan pw2
+    if ($password != $password2){
+        echo "
+        <script> 
+        alert('password tidak sesuai');
+        </script>";
+        return false;
+    }
+
+    //enkripsi password
+    $password = password_hash($password,PASSWORD_DEFAULT);
+
+    //tambahkan akun admin ke db
+    mysqli_query($conn,"INSERT INTO admin VALUES('','$username','$password')");
+
+    //cek berhasil 
+    if(mysqli_affected_rows($conn) > 0){
+        echo "
+        <script> 
+        alert('akun berhasil ditambahkan');
+        document.location.href = 'index.php';
+        </script>";
+    }
+    else{
+        echo "
+        <script> 
+        alert('akun tidak berhasil ditambahkan');
+        </script>";
+    }
+}
+
 
 function getData($query){
     global $conn;
@@ -68,17 +117,29 @@ function upload(){
     $namaFileBaru = uniqid();
     $namaFileBaru .= ".";
     $namaFileBaru .= $ekstensiGambar;
-    move_uploaded_file($tmp_name_File,"../img/".$namaFileBaru);
-
-
+    move_uploaded_file($tmp_name_File,"../../img/".$namaFileBaru);
     return $namaFileBaru;
 
 }
 
 
+//-- FUNCTION ADD (TAMBAH)
+function addDataPembeli($data){
+    global $conn;
+        
+    //gunakan htmlspecialchars agar mengantisipasi hacker
+    $nama_pembeli = strtolower(htmlspecialchars($data["nama_pembeli"]));
+    $no_telp_pembeli = strtolower(htmlspecialchars($data["no_telp_pembeli"]));
+    $alamat_pembeli = strtolower(htmlspecialchars($data["alamat_pembeli"]));
+    
+    //menyiapkan query, value pertama kosong karena id auto increment
+    $query = "INSERT INTO pembeli VALUES('','$nama_pembeli','$alamat_pembeli','$no_telp_pembeli')";
+    mysqli_query($conn, $query); 
+    return mysqli_affected_rows($conn);
+    
+}
 function addDataBarang($data){
     global $conn;
-    
     //ambil dari setiap element yang sudah di submit di form
     // $nama_brg = $data["nama_brg"];
     // $jenis_brg = $data["jenis_brg"];
@@ -86,13 +147,13 @@ function addDataBarang($data){
     // $harga_brg = $data["harga_brg"];
     // $foto_brg = $data["foto_brg"];
     
-    //gunakan htmlspecialchars agar mengantisipasi hacker
-    $nama_brg = htmlspecialchars($data["nama_brg"]);
-    $jenis_brg = htmlspecialchars($data["jenis_brg"]);
-    $berat_brg = htmlspecialchars($data["berat_brg"]);
-    $harga_brg = htmlspecialchars($data["harga_brg"]);
-    $status_brg = htmlspecialchars($data["status_brg"]);
-    // $foto_brg = htmlspecialchars($data["foto_brg"]); //foto_brg diganti versi upload di line berikutnya
+    //dapetin data method POST gunakan htmlspecialchars agar mengantisipasi hacker, gunakan strtolower biar huruf kecil
+    $nama_brg = strtolower(htmlspecialchars($data["nama_brg"]));
+    $jenis_brg = strtolower(htmlspecialchars($data["jenis_brg"]));
+    $berat_brg = strtolower(htmlspecialchars($data["berat_brg"]));
+    $harga_brg = strtolower(htmlspecialchars($data["harga_brg"]));
+    $status_brg = strtolower(htmlspecialchars($data["status_brg"]));
+    // $foto_brg = strtolower(htmlspecialchars($data["foto_brg"]); //foto_brg diganti versi upload di line berikutnya
     
     //upload gambar
     $foto_brg = upload();
@@ -108,23 +169,23 @@ function addDataBarang($data){
     $idBarang = getData("SELECT status_barang_id FROM status_barang WHERE nama_status = '$status_brg'");
     $status_brg = $idBarang[0]["status_barang_id"]; //array multidimensi ambil indeks ke-0 meskipun cuma 1 data
     
-    
     //menyiapkan query, value pertama kosong karena id auto increment
     $query = "INSERT INTO barang VALUES('','$nama_brg','$harga_brg','$jenis_brg','$foto_brg','$berat_brg','$status_brg')";
     mysqli_query($conn, $query); 
 
 
     return mysqli_affected_rows($conn);
-    
-    
-    
 }
+//-- AKHIR FUNCTION ADD (TAMBAH)
 
+
+
+//--FUNCTION DELETE
 function deleteDataBarang($id, $namaFileGambar){
     global $conn;
 
     //menghapus file gambar dari dir
-    unlink('../img/'.$namaFileGambar);
+    unlink('../../img/'.$namaFileGambar);
 
     //menghapus data barang dari db berdasarkan id
     mysqli_query($conn, "DELETE FROM barang WHERE barang_id = $id");
@@ -133,19 +194,20 @@ function deleteDataBarang($id, $namaFileGambar){
     return mysqli_affected_rows($conn);
 
 
-
 }
 
 
+
+//--FUNCTION UPDATE
 function updateDataBarang($data){
     global $conn;
     //gunakan htmlspecialchars agar mengantisipasi hacker
     $id_brg = $data["id_brg"];
-    $nama_brg = htmlspecialchars($data["nama_brg"]);
-    $jenis_brg = htmlspecialchars($data["jenis_brg"]);
-    $berat_brg = htmlspecialchars($data["berat_brg"]);
-    $harga_brg = htmlspecialchars($data["harga_brg"]);
-    $foto_brg_lama = htmlspecialchars($data["foto_brg_lama"]);
+    $nama_brg = strtolower(htmlspecialchars($data["nama_brg"]));
+    $jenis_brg = strtolower(htmlspecialchars($data["jenis_brg"]));
+    $berat_brg = strtolower(htmlspecialchars($data["berat_brg"]));
+    $harga_brg = strtolower(htmlspecialchars($data["harga_brg"]));
+    $foto_brg_lama = strtolower(htmlspecialchars($data["foto_brg_lama"]));
 
 
     //cek apakah saat mengubah data, user mengganti fotonya juga atau tetap memakai foto lama
@@ -179,63 +241,6 @@ function updateDataBarang($data){
 
 }
 
-
-function registration($data){
-    global $conn;
-
-
-    $username = $data["uname"];
-    $username = stripslashes($username);  //biar gada backslash
-    $username = strtolower($username);    
-    $password = mysqli_real_escape_string($conn, $data["pass"]); //memungkinkan pw berisi kutip
-    $password2 = mysqli_real_escape_string($conn, $data["pass2"]);
-
-    //cek uname sudah ada atau belum
-    $hasil = mysqli_query($conn, "SELECT username FROM admin WHERE username = '$username'");
-    if (mysqli_fetch_assoc($hasil)){
-        echo "
-        <script> 
-        alert('username sudah ada');
-        </script>";
-
-        return false;
-    }
-
-
-    //cek jika pw1 tidak sama dengan pw2
-    if ($password != $password2){
-        echo "
-        <script> 
-        alert('password tidak sesuai');
-        </script>";
-
-        return false;
-    }
-
-
-    //enkripsi password
-    $password = password_hash($password,PASSWORD_DEFAULT);
-
-    //tambahkan akun admin ke db
-    mysqli_query($conn,"INSERT INTO admin VALUES('','$username','$password')");
-
-    //cek berhasil 
-    if(mysqli_affected_rows($conn) > 0){
-        echo "
-        <script> 
-        alert('akun berhasil ditambahkan');
-        document.location.href = 'index.php';
-        </script>";
-    }
-    else{
-        echo "
-        <script> 
-        alert('akun tidak berhasil ditambahkan');
-        </script>";
-    }
-
-
-}
 
 
 ?>

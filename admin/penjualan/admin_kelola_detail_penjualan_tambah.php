@@ -3,26 +3,51 @@
 session_start();
 require "../function.php";
 
+
+//nama uname admin yang sekarang sedang mengakses
+$uname = $_SESSION['nama_admin']; //diset di login.php
+
 //kalo sesi admin tidak ada, di redirect ke halaman login
 if(!isset($_SESSION["admin_login"])){
     header("location: login.php");
     exit;
 }
 
-//nama uname admin yang sekarang sedang mengakses
-$uname = $_SESSION['nama_admin']; //diset di login.php
-
-// untuk mengisi kolom nomor
-$angka = 1;
 
 
-// variabel raws menyimpan semua data dari tabel barang, jenis_barang, status_barang(rekomen atau normal)
-// kalo mau make datanya tinggal panggil kolomnya dari salah satu tabel tsb.
-$raws = getData("SELECT *
-                FROM jenis_barang
-                JOIN barang on jenis_barang.jenis_barang_id = barang.jenis_barang_id
-                JOIN status_barang on status_barang.status_barang_id = barang.status_barang_id  
-                ");
+$pembeli_id = $_GET['pembeli_id'];
+var_dump($pembeli_id);die;
+
+//barang
+$brg = getData("SELECT * FROM barang");
+//jenis barang
+$jenis_brg = getData("SELECT * FROM jenis_barang");
+//status
+$status_brg = getData("SELECT * FROM status_barang");
+
+
+// jika tombol submit sudah ditekan
+if  (isset($_POST["sbmt"])){
+    //memanggil fungsi yang ada di function.php
+    //nb: $_POST adalah sebuah array yang berisi nilai dari tag Form berdasarkan attribute name di tag input
+    $cek = addDataPembeli($_POST);
+    //cek berhasil ditambahkan atau tidak apakah ada data yang nambah?
+    if($cek > 0){
+        echo "
+        <script> 
+        alert('data berhasil ditambahkan');
+        document.location.href = 'admin_kelola_penjualan.php';
+        </script>";
+        }
+
+    else{
+        echo "
+        <script> 
+        alert('data gagal ditambahkan');
+        </script>";
+    }
+    
+}
 
 
 ?>
@@ -50,10 +75,7 @@ $raws = getData("SELECT *
     <!-- Custom styles for this template-->
     <link href="../css/style-admin.css" rel="stylesheet">
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <link rel="shortcut icon" href="../img/Logo Mitra_lingkaran.png">
-
 
 
 
@@ -134,11 +156,11 @@ $raws = getData("SELECT *
                 <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Items:</h6>
-                        <a class="collapse-item" href="#">barang</a>
+                        <a class="collapse-item" href="admin_kelola_barang.php">barang</a>
                         <!-- rekomendasi bisa lewat edit bos -->
                         <!-- <a class="collapse-item" href="#">barang rekomendasi</a>   -->
                         <a class="collapse-item" href="#">jenis barang</a>
-                        <a class="collapse-item" href="admin_kelola_transaksi.php">transaksi</a>
+                        <a class="collapse-item" href="admin_kelola_penjualan.php">penjualan</a>
                         <a class="collapse-item" href="#">ulasan</a>
                         <a class="collapse-item" href="#">testimoni</a>
                     </div>
@@ -371,7 +393,7 @@ $raws = getData("SELECT *
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Kelola Barang</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Kelola Transaksi</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
@@ -380,55 +402,121 @@ $raws = getData("SELECT *
                     <!-- Content Row -->
                     <div class="row">
                         <div class="col mb-4">
+
                             <!-- Illustrations -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <a href="admin_kelola_barang_tambah.php"> <button type="button" class="btn btn-info">Tambah</button></a>
-                                </div>
-                                <div class="card-body">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="table-responsive">
-                                                <table id="table" class="table table-striped table-bordered display responsive" cellspacing="0" width="100%">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Gambar:</th>
-                                                        <th>Nama:</th>
-                                                        <th>Jenis:</th>
-                                                        <th>Berat(gr):</th>
-                                                        <th>Harga:</th>
-                                                        <th>Status:</th>
-                                                        <th>Aksi:</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <?php foreach($raws as $r): ?>
-                                                    <tr>
-                                                        <td><?= $angka++ ?></td>
-                                                        <td><img src="../img/<?= $r['foto_barang']  ?>" width="150px" /></td>
-                                                        <td><?= $r['nama_barang']  ?></td>
-                                                        <td><?= $r['nama_jenis_barang']  ?></td>
-                                                        <td><?= $r['berat_barang']  ?></td>
-                                                        <td><?= $r['harga_barang']  ?></td>
-                                                        <td><?= $r['nama_status']  ?></td>
-                                                        <td>
-                                                            <a href="admin_kelola_barang_edit.php?id=<?= $r['barang_id']  ?>"><button type="button" class="btn btn-sm btn-warning mt-1">edit⠀</button></a>
-                                                            <a href="admin_kelola_barang_hapus.php?id=<?= $r['barang_id']  ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus barang ini?')"><button type="button" class="btn btn-danger btn-sm mt-1">hapus</button></a>
-                                                        </td>
-                                                    </tr>
-                                                    <?php endforeach ?>
-                                                    </tbody>
-                                                </table>
+                            <div class="container-fluid">
+                                        <!-- Form untuk menambah -->
+                                        <!-- nb: kasih att name di tag input agar bisa dikirimkan datanya -->
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Pembeli</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <form action="" method="POST" enctype="multipart/form-data" id="uploadForm">
+                                                    <div class="row mb-1">
+                                                        <div class="col-md-2">Alamat</div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="nama_brg" autocomplete="off"
+                                                                    Required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1">
+                                                        <div class="col-md-2">Tanggal</div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <input type="date" class="form-control" id="formGroupExampleInput" name="nama_brg" autocomplete="off"
+                                                                    Required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-1">
+                                                        <div class="col-md-2">
+                                                            Barang
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <select class="form-control" id="exampleFormControlSelect1" name="jenis_brg" autocomplete="off"
+                                                                    Required>
+                                                                    <?php foreach($brg as $b): ?>
+                                                                    <option><?=$b["nama_barang"];?></option>
+                                                                    <?php endforeach ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1">
+                                                        <div class="col-md-2">Jumlah Barang</div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="nama_brg" autocomplete="off"
+                                                                    Required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1">
+                                                        <div class="col-md-2">
+                                                            Jenis Barang
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <select class="form-control" id="exampleFormControlSelect1" name="jenis_brg" autocomplete="off"
+                                                                    Required>
+                                                                    <?php foreach($jenis_brg as $j): ?>
+                                                                    <option><?=$j["nama_jenis_barang"];?></option>
+                                                                    <?php endforeach ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1">
+                                                        <div class="col-md-2">
+                                                            Berat Barang
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="input-group mb-2">
+                                                                <input type="number" min=0 class="form-control" id="inlineFormInputGroup" placeholder=""
+                                                                    name="berat_brg" autocomplete="off" Required>
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text">gram</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1">
+                                                        <div class="col-md-2">
+                                                            Harga Barang
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="input-group mb-2">
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">Rp.</div>
+                                                                </div>
+                                                                <input type="number" class="form-control" id="inlineFormInputGroup" placeholder="" name="harga_brg"
+                                                                    autocomplete="off" Required>
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text">,00</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row justify-content-beetween">
+                                                        <div class="col mb-1"><button class="btn btn-danger" type="" onclick="location.href = 'admin_kelola_transaksi.php'">Kembali</button></div>
+                                                        <div class="col mb-1"><button class="btn btn-primary" type="submit" name="sbmt" onclick="return confirm('Apakah Anda yakin ingin menambah data pembeli ini?')">Submit</button></div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    </div>  
+
                         </div>
                     </div>
+
                 </div>
                 <!-- /.container-fluid -->
+
             </div>
             <!-- End of Main Content -->
 
@@ -473,6 +561,8 @@ $raws = getData("SELECT *
         </div>
     </div>
 
+    
+
     <!-- Bootstrap core JavaScript-->
     <script src="../vendor/jquery/jquery.min.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -493,10 +583,11 @@ $raws = getData("SELECT *
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
     <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.js"></script>
-    <script src="//cdn.datatables.net/responsive/2.2.9/css/dataTables.responsive.css"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/script.js"></script>
 
 </body>
 
@@ -504,18 +595,42 @@ $raws = getData("SELECT *
 
 
 <script>
-  $(document).ready(function () {
-    $("#table").DataTable();
+    $(document).ready(function () {
+        $(".table").DataTable();
     });
 
-$('#table').DataTable( {
-    responsive: {
-        details: {
-            display: $.fn.dataTable.Responsive.display.childRowImmediate
+    function filePreview(event) {
+        if (event.target.files.length > 0) {
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("foto");
+            preview.src = src;
+            preview.style.display = "block";
         }
     }
-} );
 
+    // var fieldDinamis = document.getElementById('fieldDinamis');
+    // var add_more_fields = document.getElementById('add_more_fields');
+    // var remove_fields = document.getElementById('remove_fields');
 
+    // add_more_fields.onclick = function(){
+
+    // var newField = '<div class="row mb1" style="display: block;">' +
+    //                     '<div class="col-md-2">Barang</div>'+
+    //                         '<div class="col-md-5">' +
+    //                             '<div class="form-group">' +
+    //                                 '<input type="text" class ="form-control" id=formGroupExampleInput> name="nama_brg" autocompleted="off"' +
+    //                             '</div>' +
+    //                         '</div>' +
+    //                     '</div>' +
+    //                 '</div>';
+    // fieldDinamis.append(newField);
+    // }
+
+    // remove_fields.onclick = function(){
+    // var input_tags = fieldDinamis.getElementsByTagName('input');
+    // if(input_tags.length > 2) {
+    //     fieldDinamis.removeChild(input_tags[(input_tags.length) - 1]);
+    // }
+    // }
 </script>
 

@@ -149,7 +149,7 @@ foreach($raws as $r){
                         <!-- rekomendasi bisa lewat edit bos -->
                         <!-- <a class="collapse-item" href="#">barang rekomendasi</a>   -->
                         <a class="collapse-item" href="#">jenis barang</a>
-                        <a class="collapse-item" href="#">transaksi</a>
+                        <a class="collapse-item" href="#">penjualan</a>
                         <a class="collapse-item" href="#">ulasan</a>
                         <a class="collapse-item" href="#">testimoni</a>
                     </div>
@@ -382,7 +382,7 @@ foreach($raws as $r){
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Kelola Barang</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Kelola penjualan</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
@@ -394,7 +394,7 @@ foreach($raws as $r){
                             <!-- Illustrations -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <a href="admin_kelola_barang_tambah.php"> <button type="button" class="btn btn-info">Tambah</button></a>
+                                    <a href="admin_kelola_penjualan_tambah.php"> <button type="button" class="btn btn-info">Tambah</button></a>
                                 </div>
                                 <div class="card-body">
                                     <div class="container">

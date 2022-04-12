@@ -1,10 +1,10 @@
-function passwordVisibility() {
-	const field = document.getElementById("password");
-	const showPass = document.getElementById("showPass");
-	const hidePass = document.getElementById("hidePass");
-	
+function passwordVisibility(indeks) {
+	const field = document.getElementById("password" + indeks);
+	const showPass = document.getElementById("showPass" + indeks);
+	const hidePass = document.getElementById("hidePass" + indeks);
+
 	hidePass.classList.remove("d-none");
-	
+
 	if (field.type === "password") {
 		field.type = "text";
 		showPass.style.display = "none";
