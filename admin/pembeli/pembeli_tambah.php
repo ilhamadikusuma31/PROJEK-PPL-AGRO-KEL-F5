@@ -1,11 +1,8 @@
 <?php 
 
 session_start();
-require "../function.php";
+require "../../function.php";
 
-
-//nama uname admin yang sekarang sedang mengakses
-$uname = $_SESSION['nama_admin']; //diset di login.php
 
 //kalo sesi admin tidak ada, di redirect ke halaman login
 if(!isset($_SESSION["admin_login"])){
@@ -13,10 +10,10 @@ if(!isset($_SESSION["admin_login"])){
     exit;
 }
 
+//nama uname admin yang sekarang sedang mengakses
+$uname = $_SESSION['nama_admin']; //diset di login.php
 
 
-$pembeli_id = $_GET['pembeli_id'];
-var_dump($pembeli_id);die;
 
 //barang
 $brg = getData("SELECT * FROM barang");
@@ -31,12 +28,19 @@ if  (isset($_POST["sbmt"])){
     //memanggil fungsi yang ada di function.php
     //nb: $_POST adalah sebuah array yang berisi nilai dari tag Form berdasarkan attribute name di tag input
     $cek = addDataPembeli($_POST);
+
+
+
+
     //cek berhasil ditambahkan atau tidak apakah ada data yang nambah?
     if($cek > 0){
+
+        $nama = $_POST["nama_pembeli"];
+        $id = getData("SELECT * FROM pembeli WHERE nama_pembeli = '$nama'")[0]['pembeli_id']; 
         echo "
         <script> 
         alert('data berhasil ditambahkan');
-        document.location.href = 'admin_kelola_penjualan.php';
+        document.location.href = 'admin_kelola_detail_penjualan_tambah.php?pembeli_id=$id';
         </script>";
         }
 
@@ -414,91 +418,26 @@ if  (isset($_POST["sbmt"])){
                                             <div class="card-body">
                                                 <form action="" method="POST" enctype="multipart/form-data" id="uploadForm">
                                                     <div class="row mb-1">
+                                                        <div class="col-md-2">Nama Pembeli</div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="nama_pembeli" autocomplete="off" Required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1">
+                                                        <div class="col-md-2">No Telp</div>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="no_telp_pembeli" autocomplete="off" Required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1">
                                                         <div class="col-md-2">Alamat</div>
                                                         <div class="col-md-5">
                                                             <div class="form-group">
-                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="nama_brg" autocomplete="off"
-                                                                    Required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">Tanggal</div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <input type="date" class="form-control" id="formGroupExampleInput" name="nama_brg" autocomplete="off"
-                                                                    Required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">
-                                                            Barang
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <select class="form-control" id="exampleFormControlSelect1" name="jenis_brg" autocomplete="off"
-                                                                    Required>
-                                                                    <?php foreach($brg as $b): ?>
-                                                                    <option><?=$b["nama_barang"];?></option>
-                                                                    <?php endforeach ?>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">Jumlah Barang</div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="nama_brg" autocomplete="off"
-                                                                    Required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">
-                                                            Jenis Barang
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <select class="form-control" id="exampleFormControlSelect1" name="jenis_brg" autocomplete="off"
-                                                                    Required>
-                                                                    <?php foreach($jenis_brg as $j): ?>
-                                                                    <option><?=$j["nama_jenis_barang"];?></option>
-                                                                    <?php endforeach ?>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">
-                                                            Berat Barang
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <div class="input-group mb-2">
-                                                                <input type="number" min=0 class="form-control" id="inlineFormInputGroup" placeholder=""
-                                                                    name="berat_brg" autocomplete="off" Required>
-                                                                <div class="input-group-append">
-                                                                    <div class="input-group-text">gram</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">
-                                                            Harga Barang
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Rp.</div>
-                                                                </div>
-                                                                <input type="number" class="form-control" id="inlineFormInputGroup" placeholder="" name="harga_brg"
-                                                                    autocomplete="off" Required>
-                                                                <div class="input-group-append">
-                                                                    <div class="input-group-text">,00</div>
-                                                                </div>
+                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="alamat_pembeli" autocomplete="off" Required>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -31,7 +31,14 @@ if(!isset($_SESSION["admin_login"])){
 }
 
 //nama uname admin yang sekarang sedang mengakses
-$uname = $_SESSION['nama_admin']; //diset di login.php
+$uname = $_SESSION['nama_admin']; //diset di login.php\
+
+
+// //123
+// if sha256(kotakinputpasswordlama) == getData("SELECT password FROM admin where id=1")){
+//     //munculinn form yg sudah di populate
+
+}
 
 
 ?>

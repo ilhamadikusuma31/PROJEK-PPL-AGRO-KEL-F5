@@ -21,6 +21,7 @@ $path_brg          = "barang.php";
 $path_edit_brg     = "barang_edit.php";
 $path_hapus_brg    = "barang_hapus.php";
 $path_tambah_brg   = "barang_tambah.php";
+$path_export       = "export.php";
 
 
 $path_penjualan    ="../penjualan/penjualan.php";
@@ -403,8 +404,8 @@ if  (isset($_POST["sbmt"])){
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Kelola Barang</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        <a href="<?= $path_export; ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Unduh Rekap</a>
                     </div>
 
 

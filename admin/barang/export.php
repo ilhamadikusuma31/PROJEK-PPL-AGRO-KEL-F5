@@ -1,7 +1,6 @@
-<?php 
-
+<?php
+require '../../function.php';
 session_start();
-require "../function.php";
 
 
 //kalo sesi admin tidak ada, di redirect ke halaman login
@@ -13,46 +12,38 @@ if(!isset($_SESSION["admin_login"])){
 //nama uname admin yang sekarang sedang mengakses
 $uname = $_SESSION['nama_admin']; //diset di login.php
 
+// untuk mengisi kolom nomor
+$angka = 1;
 
 
-//barang
-$brg = getData("SELECT * FROM barang");
-//jenis barang
-$jenis_brg = getData("SELECT * FROM jenis_barang");
-//status
-$status_brg = getData("SELECT * FROM status_barang");
+// variabel raws menyimpan semua data dari tabel barang, jenis_barang, status_barang(rekomen atau normal)
+// kalo mau make datanya tinggal panggil kolomnya dari salah satu tabel tsb.
+$raws = getData("SELECT *
+                FROM jenis_barang
+                JOIN barang on jenis_barang.jenis_barang_id = barang.jenis_barang_id
+                JOIN status_barang on status_barang.status_barang_id = barang.status_barang_id  
+                ");
 
 
-// jika tombol submit sudah ditekan
-if  (isset($_POST["sbmt"])){
-    //memanggil fungsi yang ada di function.php
-    //nb: $_POST adalah sebuah array yang berisi nilai dari tag Form berdasarkan attribute name di tag input
-    $cek = addDataPembeli($_POST);
+$path_web_gemol    = "../index.php";
+$path_login        = "../login.php";
+$path_logout       = "../logout.php";
+$path_registrasi   = "../registrasi.php";
+$path_main         = "../index.php";
+$path_img          = "../../img";
+$path_vendor       = "../../vendor";
+$path_css          = "../../css";
+$path_js           = "../../js";
 
 
+$path_brg          = "barang.php";
+$path_edit_brg     = "barang_edit.php";
+$path_hapus_brg    = "barang_hapus.php";
+$path_tambah_brg   = "barang_tambah.php";
+$path_export       = "export.php";
 
 
-    //cek berhasil ditambahkan atau tidak apakah ada data yang nambah?
-    if($cek > 0){
-
-        $nama = $_POST["nama_pembeli"];
-        $id = getData("SELECT * FROM pembeli WHERE nama_pembeli = '$nama'")[0]['pembeli_id']; 
-        echo "
-        <script> 
-        alert('data berhasil ditambahkan');
-        document.location.href = 'admin_kelola_detail_penjualan_tambah.php?pembeli_id=$id';
-        </script>";
-        }
-
-    else{
-        echo "
-        <script> 
-        alert('data gagal ditambahkan');
-        </script>";
-    }
-    
-}
-
+$path_penjualan    ="../penjualan/penjualan.php"
 
 ?>
 
@@ -68,18 +59,21 @@ if  (isset($_POST["sbmt"])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin | Dashboard</title>
+    <title>Ekspor Laporan Barang</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?=$path_vendor;?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/style-admin.css" rel="stylesheet">
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="shortcut icon" href="../img/Logo Mitra_lingkaran.png">
+    <link href="<?=$path_css;?>/style-admin.css" rel="stylesheet">
+    <link href="<?=$path_css;?>/sb-admin-2.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link rel="shortcut icon" href="<?=$path_img;?>/Logo Mitra_lingkaran.png">
+
 
 
 
@@ -95,10 +89,10 @@ if  (isset($_POST["sbmt"])){
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= $path_main; ?>">
                 <div class="sidebar-brand-icon">
                     <!-- <i class="fas fa-laugh-wink"></i> -->
-                    <img src="../img/Logo Mitra_lingkaran.png" alt="" width="50%">
+                    <img src ="<?= $path_img; ?>/Logo Mitra_lingkaran.png" alt="" width="50%">
                 </div>
                 <div class="sidebar-brand-text mx-3">Admin</div>
             </a>
@@ -108,7 +102,7 @@ if  (isset($_POST["sbmt"])){
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="<?= $path_main; ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -130,26 +124,19 @@ if  (isset($_POST["sbmt"])){
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="../index.php">Website Gemol</a>
-                        <!-- <a class="collapse-item" href="gemolインドネシアで食べたい.php">Register</a>
-                        <a class="collapse-item" href="forgot-password.php">Forgot Password</a> -->
+                        <h6 class="collapse-header">Admin Screens:</h6>
+                        <a class="collapse-item" href="<?= $path_registrasi; ?>">Register</a>
+                        <a class="collapse-item" href="<?= $path_login; ?>">Login</a>
+                        <a class="collapse-item" href="#">Forgot Password</a>
                         <div class="collapse-divider"></div>
-                        <!-- <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.php">404 Page</a>
+                        <h6 class="collapse-header">Other Pages:</h6>
+                        <a class="collapse-item" href="<?= $path_web_gemol; ?>">Website Gemol</a>
+                        <!-- <a class="collapse-item" href="404.php">404 Page</a>
                         <a class="collapse-item" href="blank.php">Blank Page</a> -->
                     </div>
                 </div>
             </li>
-            
-            <!-- Nav Item - Charts
-            <li class="nav-item">
-                <a class="nav-link" href="charts.php">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li> -->
-
-
+  
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2"
@@ -160,11 +147,9 @@ if  (isset($_POST["sbmt"])){
                 <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Items:</h6>
-                        <a class="collapse-item" href="admin_kelola_barang.php">barang</a>
-                        <!-- rekomendasi bisa lewat edit bos -->
-                        <!-- <a class="collapse-item" href="#">barang rekomendasi</a>   -->
+                        <a class="collapse-item" href="<?= $path_brg; ?>">barang</a>
                         <a class="collapse-item" href="#">jenis barang</a>
-                        <a class="collapse-item" href="admin_kelola_penjualan.php">penjualan</a>
+                        <a class="collapse-item" href="<?= $path_penjualan; ?>">penjualan</a>
                         <a class="collapse-item" href="#">ulasan</a>
                         <a class="collapse-item" href="#">testimoni</a>
                     </div>
@@ -303,8 +288,8 @@ if  (isset($_POST["sbmt"])){
                                     Message Center
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                    <div class="dropdown-list-image mr-3"> 
+                                        <img class="rounded-circle" src="<?= $path_img; ?>/admin/undraw_profile_1.svg"
                                             alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
@@ -316,7 +301,7 @@ if  (isset($_POST["sbmt"])){
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                        <img class="rounded-circle" src="<?= $path_img; ?>/undraw_profile_2.svg"
                                             alt="...">
                                         <div class="status-indicator"></div>
                                     </div>
@@ -328,7 +313,7 @@ if  (isset($_POST["sbmt"])){
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                        <img class="rounded-circle" src="<?= $path_img; ?>/undraw_profile_3.svg"
                                             alt="...">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
@@ -362,7 +347,7 @@ if  (isset($_POST["sbmt"])){
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $uname; ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="../img/admin/undraw_profile.svg">
+                                    src = "<?= $path_img;?>/admin/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -380,7 +365,7 @@ if  (isset($_POST["sbmt"])){
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#popUpConfirmLogout">
+                                <a class="dropdown-item" href="<?= $path_logout; ?>" data-toggle="modal" data-target="#popUpConfirmLogout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -397,65 +382,54 @@ if  (isset($_POST["sbmt"])){
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Kelola Transaksi</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        <h1 class="h3 mb-0 text-gray-800">Export Laporan Barang</h1>
                     </div>
 
 
                     <!-- Content Row -->
                     <div class="row">
                         <div class="col mb-4">
-
                             <!-- Illustrations -->
-                            <div class="container-fluid">
-                                        <!-- Form untuk menambah -->
-                                        <!-- nb: kasih att name di tag input agar bisa dikirimkan datanya -->
-                                        <div class="card shadow mb-4">
-                                            <div class="card-header py-3">
-                                                <h6 class="m-0 font-weight-bold text-primary">Tambah Data Pembeli</h6>
-                                            </div>
-                                            <div class="card-body">
-                                                <form action="" method="POST" enctype="multipart/form-data" id="uploadForm">
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">Nama Pembeli</div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="nama_pembeli" autocomplete="off" Required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">No Telp</div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="no_telp_pembeli" autocomplete="off" Required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-1">
-                                                        <div class="col-md-2">Alamat</div>
-                                                        <div class="col-md-5">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control" id="formGroupExampleInput" name="alamat_pembeli" autocomplete="off" Required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row justify-content-beetween">
-                                                        <div class="col mb-1"><button class="btn btn-danger" type="" onclick="location.href = 'admin_kelola_transaksi.php'">Kembali</button></div>
-                                                        <div class="col mb-1"><button class="btn btn-primary" type="submit" name="sbmt" onclick="return confirm('Apakah Anda yakin ingin menambah data pembeli ini?')">Submit</button></div>
-                                                    </div>
-                                                </form>
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="table-responsive">
+                                                <table id="table" class="table table-striped table-bordered display responsive" cellspacing="0" width="100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Gambar:</th>
+                                                        <th>Nama:</th>
+                                                        <th>Jenis:</th>
+                                                        <th>Berat(gr):</th>
+                                                        <th>Harga:</th>
+                                                        <th>Status:</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php foreach($raws as $r): ?>
+                                                    <tr>
+                                                        <td><?= $angka++ ?></td>
+                                                        <td><img src ="<?= $path_img; ?>/<?= $r['foto_barang']  ?>" width="150px" /></td>
+                                                        <td><?= $r['nama_barang']  ?></td>
+                                                        <td><?= $r['nama_jenis_barang']  ?></td>
+                                                        <td><?= $r['berat_barang']  ?></td>
+                                                        <td><?= $r['harga_barang']  ?></td>
+                                                        <td><?= $r['nama_status']  ?></td>
+                                                    </tr>
+                                                    <?php endforeach ?>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                    </div>  
-
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
-
             </div>
             <!-- End of Main Content -->
 
@@ -494,82 +468,79 @@ if  (isset($_POST["sbmt"])){
                 <div class="modal-body">Pilih "Logout" jika kamu yakin.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                    <a class="btn btn-primary" href="<?= $path_logout; ?>">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
-    
-
     <!-- Bootstrap core JavaScript-->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src ="<?= $path_vendor; ?>/jquery/jquery.min.js"></script>
+    <script src="<?= $path_vendor; ?>/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= $path_vendor; ?>/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="../js/sb-admin-2.min.js"></script>
+    <script src="<?= $path_js; ?>/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="../vendor/chart.js/Chart.min.js"></script>
+    <script src="<?= $path_vendor; ?>/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
+    <script src="<?= $path_js; ?>/demo/chart-area-demo.js"></script>
+    <script src="<?= $path_js; ?>/demo/chart-pie-demo.js"></script>
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <script src="<?= $path_js; ?>/script.js"></script>
     <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="//cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.js"></script>
+    <script src="//cdn.datatables.net/responsive/2.2.9/css/dataTables.responsive.css"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
 
 </body>
 
 </html>
 
 
+
+
+
 <script>
-    $(document).ready(function () {
-        $(".table").DataTable();
+  $(document).ready(function () {
+    $("#table").DataTable();
     });
 
-    function filePreview(event) {
-        if (event.target.files.length > 0) {
-            var src = URL.createObjectURL(event.target.files[0]);
-            var preview = document.getElementById("foto");
-            preview.src = src;
-            preview.style.display = "block";
+$('#table').DataTable( {
+    responsive: {
+        details: {
+            display: $.fn.dataTable.Responsive.display.childRowImmediate
         }
     }
+} );
 
-    // var fieldDinamis = document.getElementById('fieldDinamis');
-    // var add_more_fields = document.getElementById('add_more_fields');
-    // var remove_fields = document.getElementById('remove_fields');
 
-    // add_more_fields.onclick = function(){
-
-    // var newField = '<div class="row mb1" style="display: block;">' +
-    //                     '<div class="col-md-2">Barang</div>'+
-    //                         '<div class="col-md-5">' +
-    //                             '<div class="form-group">' +
-    //                                 '<input type="text" class ="form-control" id=formGroupExampleInput> name="nama_brg" autocompleted="off"' +
-    //                             '</div>' +
-    //                         '</div>' +
-    //                     '</div>' +
-    //                 '</div>';
-    // fieldDinamis.append(newField);
-    // }
-
-    // remove_fields.onclick = function(){
-    // var input_tags = fieldDinamis.getElementsByTagName('input');
-    // if(input_tags.length > 2) {
-    //     fieldDinamis.removeChild(input_tags[(input_tags.length) - 1]);
-    // }
-    // }
 </script>
 

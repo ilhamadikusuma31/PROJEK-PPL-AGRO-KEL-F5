@@ -74,6 +74,7 @@ foreach($raws as $r){
     <title>Admin | Dashboard</title>
 
     <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link href="<?=$path_vendor;?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -395,8 +396,8 @@ foreach($raws as $r){
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Kelola penjualan</h1>
-                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                    <a href="export.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            class="fas fa-download fa-sm text-white-50"></i> Unduh Rekap</a>
                 </div>
 
 
@@ -413,7 +414,7 @@ foreach($raws as $r){
                                     <div class="row">
                                         <div class="table-responsive">
                                             <table id="table" class="table table-striped table-bordered display responsive" cellspacing="0" width="100%">
-                                                <thead>
+                                            <thead>
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Nama Pembeli</th>
@@ -446,25 +447,26 @@ foreach($raws as $r){
                                                 </tr>
                                                 <?php endforeach ?>
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>Jumlah</td>
-                                                    <td>Harga Total</td>
-                                                    <td></td>
+                                                    <th><?= $angka; ?></th>
+                                                    <th>Nama Pembeli</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Alamat</th>
+                                                    <th>Barang</th>
+                                                    <th>Harga/pcs</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Harga Total</th>
+                                                    <th>Aksi</th>
                                                 </tr>
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td><?= $total_seluruh; ?></td>
-                                                    <td><?= $harga_seluruh; ?></td>
+                                                    <th><?= $angka+=1; ?></th>
+                                                    <th><b><i class="bi bi-align-bottom"></i></b></th>
+                                                    <th><b><i class="bi bi-align-bottom"></i></b></th>
+                                                    <th><b><i class="bi bi-align-bottom"></i></b></th>
+                                                    <th><b><i class="bi bi-align-bottom"></i></b></th>
+                                                    <th><b><i class="bi bi-align-bottom"></i></b></th>
+                                                    <th><?= $total_seluruh; ?></th>
+                                                    <th><?= $harga_seluruh; ?></th>
+                                                    <th></th>
                                                 </tr>
                                                 </tbody>
                                             </table>
