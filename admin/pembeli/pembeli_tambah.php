@@ -79,7 +79,7 @@ if  (isset($_POST["sbmt"])){
     <!-- Custom styles for this template-->
     <link href="../css/style-admin.css" rel="stylesheet">
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="shortcut icon" href="../img/Logo Mitra_lingkaran.png">
+    <link rel="shortcut icon" href="../img/Logo_Mitra_lingkaran.png">
 
 
 
@@ -98,7 +98,7 @@ if  (isset($_POST["sbmt"])){
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <!-- <i class="fas fa-laugh-wink"></i> -->
-                    <img src="../img/Logo Mitra_lingkaran.png" alt="" width="50%">
+                    <img src="../img/Logo_Mitra_lingkaran.png" alt="" width="50%">
                 </div>
                 <div class="sidebar-brand-text mx-3">Admin</div>
             </a>

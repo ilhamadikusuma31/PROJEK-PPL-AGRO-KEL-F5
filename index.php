@@ -23,7 +23,7 @@ $path_profil = "profil.php";
 
   <!-- Style CSS sendiri -->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="shortcut icon" href="<?=$path_img;?>/Logo Mitra_lingkaran.png">
+  <link rel="shortcut icon" href="<?=$path_img;?>/Logo_Mitra_lingkaran.png">
   
   <title>Gemol Indonesia</title>
 </head>
@@ -34,7 +34,7 @@ $path_profil = "profil.php";
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-brand" href="#">
-          <img src="<?= $path_img; ?>/Logo Mitra.png" class="rounded-circle" alt="" width="30" height="30"
+          <img src="<?= $path_img; ?>/Logo_Mitra.png" class="rounded-circle" alt="" width="30" height="30"
             class="d-inline-block align-text-top">
           Gemol
         </a>

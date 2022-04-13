@@ -25,7 +25,7 @@ $path_hapus_brg    = "barang/barang_hapus.php";
 $path_tambah_brg   = "barang/barang_tambah.php";
 
 
-$path_penjualan    ="../penjualan/penjualan.php";
+$path_penjualan    ="penjualan/penjualan.php";
 
 //kalo sesi admin tidak ada, di redirect ke halaman login
 if(!isset($_SESSION["admin_login"])){
@@ -85,7 +85,7 @@ if(isset($_POST["sbmt-pw"])){
     <link href="<?=$path_css;?>/sb-admin-2.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <link rel="shortcut icon" href="<?=$path_img;?>/Logo Mitra_lingkaran.png">
+    <link rel="shortcut icon" href="<?=$path_img;?>/Logo_Mitra_lingkaran.png">
 
 
 
@@ -105,7 +105,7 @@ if(isset($_POST["sbmt-pw"])){
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= $path_main; ?>">
                 <div class="sidebar-brand-icon">
                     <!-- <i class="fas fa-laugh-wink"></i> -->
-                    <img src ="<?= $path_img; ?>/Logo Mitra_lingkaran.png" alt="" width="50%">
+                    <img src ="<?= $path_img; ?>/Logo_Mitra_lingkaran.png" alt="" width="50%">
                 </div>
                 <div class="sidebar-brand-text mx-3">Admin</div>
             </a>

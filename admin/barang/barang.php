@@ -73,7 +73,7 @@ $path_penjualan    ="../penjualan/penjualan.php"
     <link href="<?=$path_css;?>/sb-admin-2.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <link rel="shortcut icon" href="<?=$path_img;?>/Logo Mitra_lingkaran.png">
+    <link rel="shortcut icon" href="<?=$path_img;?>/Logo_Mitra_lingkaran.png">
 
 
 
@@ -93,7 +93,7 @@ $path_penjualan    ="../penjualan/penjualan.php"
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= $path_main; ?>">
                 <div class="sidebar-brand-icon">
                     <!-- <i class="fas fa-laugh-wink"></i> -->
-                    <img src ="<?= $path_img; ?>/Logo Mitra_lingkaran.png" alt="" width="50%">
+                    <img src ="<?= $path_img; ?>/Logo_Mitra_lingkaran.png" alt="" width="50%">
                 </div>
                 <div class="sidebar-brand-text mx-3">Admin</div>
             </a>

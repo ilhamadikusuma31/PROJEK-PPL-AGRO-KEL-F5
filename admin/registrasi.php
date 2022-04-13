@@ -23,7 +23,7 @@ if(isset($_POST['regis'])){
 	<link rel="stylesheet" type="text/css" href="../font/font-awesome-4.7.0/css/font-awesome.min.css">
 	<!-- / Custom style -->
 	<link rel="stylesheet" type="text/css" href="../css/styleLoginSignUpAdmin.css">
-	<link rel="shortcut icon" href="../img/Logo Mitra_lingkaran.png">
+	<link rel="shortcut icon" href="../img/Logo_Mitra_lingkaran.png">
 	<title>Halaman Registrasi</title>
 </head>
 
