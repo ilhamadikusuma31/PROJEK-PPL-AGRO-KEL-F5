@@ -41,6 +41,7 @@ $path_edit_brg     = "barang_edit.php";
 $path_hapus_brg    = "barang_hapus.php";
 $path_tambah_brg   = "barang_tambah.php";
 $path_export       = "export.php";
+$path_setting_admin= "../setting_admin.php";
 
 
 $path_penjualan    ="../penjualan/penjualan.php"
@@ -352,17 +353,9 @@ $path_penjualan    ="../penjualan/penjualan.php"
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#popUpConfirmPW">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<?= $path_logout; ?>" data-toggle="modal" data-target="#popUpConfirmLogout">
@@ -480,6 +473,65 @@ $path_penjualan    ="../penjualan/penjualan.php"
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="<?= $path_logout; ?>">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Confirm PW Modal-->
+     <div class="modal fade" id="popUpConfirmPW" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Password</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                        <form id="formConfirmPW" method="POST">
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <input class="form-control" type="password" placeholder="Password" id="password1" name="confirmPW" autocomplete="off" required>
+                                        <span class="form-control-focus"></span>
+                                    </div>
+                                    <div class="col-2 mt-2 ms-1">
+                                        <div class="input-group-addon" onclick="passwordVisibility(1);">
+                                            <i class="fa fa-eye" id="showPass1"></i>
+                                            <i class="fa fa-eye-slash d-none" id="hidePass1"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-start">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button form="formConfirmPW" type="submit" class="btn btn-primary" name="sbmt-pw">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- PW salah modal-->
+    <div class="modal fade" id="popUpConfirmPwSalah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Password Salah!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="#">OK</a>
                 </div>
             </div>
         </div>

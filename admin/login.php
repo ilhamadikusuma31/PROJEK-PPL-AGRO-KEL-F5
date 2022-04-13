@@ -39,6 +39,8 @@ if(isset($_POST['sbmt'])){
 
         //cek password
         $row = mysqli_fetch_assoc($hasil);
+
+       
         if(password_verify($pw, $row['password'])){
             
             //set session 
@@ -107,11 +109,11 @@ if(isset($_POST['sbmt'])){
 
 					<div class="input-wrapper">
 						<div class="input-group">
-							<input class="form-control" type="password" placeholder="Password" id="password" name="password" autocomplete="off" required>
+							<input class="form-control" type="password" placeholder="Password" id="password1" name="password" autocomplete="off" required>
 							<span class="form-control-focus"></span>
-							<div class="input-group-addon" onclick="passwordVisibility();">
-								<i class="fa fa-eye" id="showPass"></i>
-								<i class="fa fa-eye-slash d-none" id="hidePass"></i>
+							<div class="input-group-addon" onclick="passwordVisibility(1);">
+								<i class="fa fa-eye" id="showPass1"></i>
+								<i class="fa fa-eye-slash d-none" id="hidePass1"></i>
 							</div>
 						</div>
 					</div>

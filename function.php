@@ -208,8 +208,6 @@ function updateDataBarang($data){
     $berat_brg = strtolower(htmlspecialchars($data["berat_brg"]));
     $harga_brg = strtolower(htmlspecialchars($data["harga_brg"]));
     $foto_brg_lama = strtolower(htmlspecialchars($data["foto_brg_lama"]));
-
-
     //cek apakah saat mengubah data, user mengganti fotonya juga atau tetap memakai foto lama
     if($_FILES['foto_brg']['error'] === 4){ //kalo kosong pake yang lama
         $foto_brg = $foto_brg_lama;
@@ -219,12 +217,9 @@ function updateDataBarang($data){
         $foto_brg = upload();
     }
     
-    
-
     //untuk jenis barang harus di convert dari string ke id supaya cocok di database
     $idBarang = getData("SELECT jenis_barang_id FROM jenis_barang WHERE nama_jenis_barang = '$jenis_brg'");
     $jenis_brg = $idBarang[0]["jenis_barang_id"]; //array multidimensi ambil indeks ke-0 meskipun cuma 1 data
-
 
     //menyiapkan query
     $query = "UPDATE barang SET 
@@ -235,9 +230,41 @@ function updateDataBarang($data){
                 foto_barang = '$foto_brg' WHERE barang_id = $id_brg";
 
     mysqli_query($conn, $query); 
-
     return mysqli_affected_rows($conn);
+}
 
+
+function updateDataAdmin($data){
+    global $conn ;
+
+    $id = $data['admin_id'];
+    $username = $data['uname'];
+    $password = $data['pass1'];
+    $password2 = $data['pass2'];
+
+    if($password!= $password2){
+        echo "<script>
+                alert('password tidak sesuai')
+            </script>";
+        return false;
+    }
+
+    $username = stripslashes($username);  //biar gada backslash
+    $username = strtolower($username);    
+    $password = mysqli_real_escape_string($conn, $password); //memungkinkan pw berisi kutip
+    $password2 = mysqli_real_escape_string($conn, $password2);
+    //enkripsi password
+    $password = password_hash($password,PASSWORD_DEFAULT);
+
+    //tambahkan akun admin ke db
+    //menyiapkan query
+    $query = "UPDATE admin SET 
+                username = '$username', 
+                password = '$password'
+                WHERE admin_id = $id";
+
+    mysqli_query($conn,$query);
+    return mysqli_affected_rows($conn);
 
 }
 
