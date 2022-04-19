@@ -790,9 +790,9 @@ if(isset($_POST["sbmt-pw"])){
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-start">
+                <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <button form="formConfirmPW" type="submit" class="btn btn-primary" name="sbmt-pw">Submit</button>
+                    <a class="btn btn-primary" href="<?= $path_logout; ?>">Logout</a>
                 </div>
             </div>
         </div>

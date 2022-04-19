@@ -4,9 +4,6 @@ session_start();
 require "../../function.php";
 
 
-
-
-
 $path_web_gemol    = "../index.php";
 $path_login        = "../login.php";
 $path_logout       = "../logout.php";
